@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/@fern-solutions/aframe-mirror/dist/mirror.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <script src="highlight.js"></script>
+
+</head>
+
+<body>
+    <div id="dropzone" class="flex flex-col items-center justify-center h-full w-full bg-gradient-to-r from-cyan-500 to-blue-500">
+        <h1 class="text-9xl m-6 text-white">Remember Us</h1>
+        <div class="flex flex-col w-[900px] h-[450px] bg-[white] rounded-[50px] drop-shadow-md hover:drop-shadow-xl p-[70px]">
+            <div id="template-container" class="dz-preview dz-file-preview hidden">
+                <div class="flex flex-col justify-center items-center space-y-1 border rounded-[10px] p-2 w-[45%] h-min">
+                    <div class="dz-details">
+                        <div class="dz-filename"><span data-dz-name></span></div>
+                        <div class="dz-size" data-dz-size></div>
+                        <img data-dz-thumbnail />
+                    </div>
+                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                    <button class="underline text-blue" data-dz-remove>Remove File</button>
+                </div>
+            </div>
+            <h1 class="text-4xl mb-6 font-sans">
+                Upload Files
+            </h1>
+
+            <form action="/target"
+                class="dropzone min-w-[400px] h-[200px] flex flex-nowrap flex-row justify-center items-center space-y-1 space-x-1"
+                id="my-great-dropzone"></form>
+            <button id="my-button" class='border-blue-500 border-[1px] px-4 py-2 w-[200px] h-[50px] rounded-[25px] mt-[30px]'>
+                Enter Experience
+            </button>
+        </div>
+
+    </div>
+    <div id="astar" class="">
+        <a-scene cursor="rayOrigin: mouse">
+            <a-assets>
+                <a-asset-item id="dog"
+                    src="https://cdn.glitch.global/c7ea5bec-16fd-4982-ade1-b39b23260ee5/dog.gltf?v=1680966128077"></a-asset-item>
+                <video id="grandma" autoplay loop="true" src="grandma.mp4"></video>
+            </a-assets>
+            <a-entity id="opacity" position="-2.5 0.7 0"
+                animation="property: components.text.material.uniforms.opacity.value; to: 0; dir: alternate; loop: true"
+                text="color: white; align: center; value: Animating opacity; width: 1.5">
+            </a-entity>
+            <a-entity highlight>
+                <a-entity text="value: Hello World;"></a-entity>
+                <a-entity id="#dog" gltf-model="#dog" scale="1 1 1" position="-1 0 -1" visible="false"
+                    shadow="cast: false" begin="fadeIn"></a-entity>
+                <a-entity id="dogText" position="0.34 2 -1"
+                    animation="property: components.text.material.uniforms.opacity.value; from: 0; to: 1;dur: 2000; loop: false"
+                    animation__2="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
+                    animation__2_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+                    text="anchor: center; width: 1.5; color: black; value: my dog lmao" visible="false">
+                </a-entity>
+                <a-video src="https://cdn.glitch.me/8191ec5e-274c-4b80-a3a2-ff7ef77e4f0a/grandma.mp4?v=1680995202814"
+                    width="16" height="9" position="0 10 -20"></a-video>
+                <a-box position="-0.48406 0.47409 -2.72699" rotation="0 40 0" color="#4CC3D9" class="menu-button"
+                    material="" geometry="" visible="true"></a-box>
+                <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" class="menu-button"></a-sphere>
+                <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"
+                    class="menu-button"></a-cylinder>
+                <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"
+                    class="menu-button"></a-plane>
+                <a-mirror position="0 3 -10" scale="10 5 1" rotation="0 0 0"></a-mirror>
+                <a-sky color="#ECECEC"></a-sky>
+            </a-entity>
+
+        </a-scene>
+    </div>
+
+    <script>
+        Dropzone.options.myGreatDropzone = { // camelized version of the `id`
+            paramName: "file.mp4", // The name that will be used to transfer the file
+            previewTemplate: document.querySelector('#template-container').innerHTML,
+            maxFilesize: 40, // MB
+            accept: function (file, done) {
+                done()
+            }
+        };
+        var clicked = false;
+        var myButton = document.getElementById("my-button")
+        var dropzone = document.getElementById("dropzone");
+        var astar = document.getElementById("astar");
+
+        function handleClick() {
+
+            clicked = !clicked;
+            if (clicked) {
+                dropzone.style.display = "none"
+                astar.style.display = "flex"
+            } else {
+                dropzone.style.display = "flex"
+                astar.style.display = "none"
+            }
+        }
+        myButton.addEventListener("click", handleClick);
+
+        if (clicked) {
+            dropzone.style.display = "none"
+            astar.style.display = "flex"
+        } else {
+            dropzone.style.display = "flex"
+            astar.style.display = "none"
+        }
+
+    </script>
+
+</body>
+
+</html>
+<!--                   animation="property: components.text.material.uniforms.opacity.value; to: 0; dir: 200; loop: false"
+ -->
